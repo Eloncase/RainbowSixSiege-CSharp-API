@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2003
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "R6SiegeAPI", "R6SiegeAPI\R6SiegeAPI.csproj", "{4732EDAA-C245-4A78-BC65-1E11F86FDE81}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test", "Test\Test.csproj", "{B69D8171-DDBD-4FDF-97C1-7A3F62A2AD70}"
+	ProjectSection(ProjectDependencies) = postProject
+		{4732EDAA-C245-4A78-BC65-1E11F86FDE81} = {4732EDAA-C245-4A78-BC65-1E11F86FDE81}
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{78688DB8-5A8F-42F2-B0D9-6EAB9E8C741D}"
+	ProjectSection(SolutionItems) = preProject
+		.gitattributes = .gitattributes
+		.gitignore = .gitignore
+		LICENSE = LICENSE
+		MANIFEST.in = MANIFEST.in
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "r6sapi", "r6sapi", "{05F94C5C-7DDB-42FA-96BB-5D5C7DE08E5F}"
+	ProjectSection(SolutionItems) = preProject
+		r6sapi\__init__.py = r6sapi\__init__.py
+		r6sapi\r6sapi.py = r6sapi\r6sapi.py
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "examples", "examples", "{61D8DBB8-5D3C-45DF-A3AA-FC91CCE88BD5}"
+	ProjectSection(SolutionItems) = preProject
+		examples\multi_user_example.py = examples\multi_user_example.py
+		examples\simple_example.py = examples\simple_example.py
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4732EDAA-C245-4A78-BC65-1E11F86FDE81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4732EDAA-C245-4A78-BC65-1E11F86FDE81}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4732EDAA-C245-4A78-BC65-1E11F86FDE81}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4732EDAA-C245-4A78-BC65-1E11F86FDE81}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B69D8171-DDBD-4FDF-97C1-7A3F62A2AD70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B69D8171-DDBD-4FDF-97C1-7A3F62A2AD70}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B69D8171-DDBD-4FDF-97C1-7A3F62A2AD70}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B69D8171-DDBD-4FDF-97C1-7A3F62A2AD70}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A8A31786-434A-40A3-B7A5-F62CD75606B8}
+	EndGlobalSection
+EndGlobal
