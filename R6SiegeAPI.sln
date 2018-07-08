@@ -19,18 +19,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "r6sapi", "r6sapi", "{05F94C5C-7DDB-42FA-96BB-5D5C7DE08E5F}"
-	ProjectSection(SolutionItems) = preProject
-		r6sapi\__init__.py = r6sapi\__init__.py
-		r6sapi\r6sapi.py = r6sapi\r6sapi.py
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "examples", "examples", "{61D8DBB8-5D3C-45DF-A3AA-FC91CCE88BD5}"
-	ProjectSection(SolutionItems) = preProject
-		examples\multi_user_example.py = examples\multi_user_example.py
-		examples\simple_example.py = examples\simple_example.py
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
