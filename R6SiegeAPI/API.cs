@@ -187,7 +187,7 @@ namespace R6SiegeAPI
         {
             if (Operators is null)
             {
-                var json = await GetAsync("https://ubistatic-a.akamaihd.net/0058/prod/assets/data/operators.79229c6d.json");
+                var json = await GetAsync("https://ubistatic-a.akamaihd.net/0058/prod/assets/data/operators.3a2655c8.json");
                 Operators = JsonConvert.DeserializeObject<Dictionary<string, OperatorDef>>(json);
             }
             return Operators;
@@ -250,7 +250,7 @@ namespace R6SiegeAPI
             if (Seasons is null)
             {
                 Seasons = new Dictionary<int, Season>();
-                var json = await GetAsync("https://ubistatic-a.akamaihd.net/0058/prod/assets/data/seasons.57a6789a.json");
+                var json = await GetAsync("https://ubistatic-a.akamaihd.net/0058/prod/assets/data/seasons.758503d3.json");
                 var data = JsonConvert.DeserializeObject<JObject>(json);
                 Season.LatestSeason = data.Last.First.ToObject<int>();
                 foreach (var sjson in data.First.Values())
