@@ -66,6 +66,11 @@ namespace R6SiegeAPI
                     throw new ArgumentOutOfRangeException("Platform");
             }
         }
+
+        public static string ToStringValue(this Locales locale)
+        {
+            return locale.ToString().Replace('_', '-');
+        }
     }
 
     public static class Enums
@@ -95,6 +100,29 @@ namespace R6SiegeAPI
         {
             Ranked,
             Casual
+        }
+
+        public enum Locales
+        {
+            cs_cz,
+            de_de,
+            en_au,
+            en_gb,
+            en_nordic,
+            en_us,
+            es_es,
+            es_mx,
+            fr_ca,
+            fr_fr,
+            it_it,
+            ja_jp,
+            ko_kr,
+            nl_nl,
+            pl_pl,
+            pt_br,
+            ru_ru,
+            zh_cn,
+            zh_tw
         }
 
         /// <summary>

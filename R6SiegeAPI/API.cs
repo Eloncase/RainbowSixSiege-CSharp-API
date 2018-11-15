@@ -34,6 +34,10 @@ namespace R6SiegeAPI
         /// Your current auth key (will change every time you connect)
         /// </summary>
         string AuthKey;
+        /// <summary>
+        /// Locale
+        /// </summary>
+        public Locales LocaleKey { get; private set; }
 
         /// <summary>
         /// Contains the SpaceId for each platform
@@ -44,6 +48,13 @@ namespace R6SiegeAPI
                 { "psn", "05bfb3f7-6c21-4c42-be1f-97a33fb5cf66" },
                 { "xbl", "98a601e5-ca91-4440-b1c5-753f601a2c90" }
             };
+
+        public static string BaseUrl { get; set; } = "https://game-rainbow6.ubi.com/";
+        public string OperatorsEndpoint { get; set; } = BaseUrl + "assets/data/operators.682af7ce0969c4e.json";
+        public string WeaponsEndpoint { get; set; } = BaseUrl + "assets/data/weapons.8a9b3d9e7dadee0.json";
+        public string SeasonsEndpoint { get; set; } = BaseUrl + "assets/data/seasons.791d0e62f4766f9.json";
+        public string LocaleEndpoint { get; set; } = BaseUrl + "assets/locales/locale.en-us.f2aae574be115b9.json";
+
 
         private static string GetBasicToken(string email, string password)
         {
@@ -56,21 +67,11 @@ namespace R6SiegeAPI
         /// <param name="email">Your Ubisoft email</param>
         /// <param name="password">Your Ubisoft email</param>
         /// <param name="appId">Your Ubisoft appid, not required</param>
-        public static API InitAPI(string email, string password, string appId = null)
+        /// <param name="locale">Locale, not required</param>
+        /// <param name="tryLoadLast">if true library will try to load latest jsons automatically, not required</param>
+        public static API InitAPI(string email, string password, string appId = "39baebad-39e5-4552-8c25-2c9b919064e2", Locales locale = Locales.en_us, bool tryLoadLast = true)
         {
-            if (!(instance is null))
-                return instance;
-
-            instance = new API();
-
-            instance.Token = GetBasicToken(email, password);
-
-            if (appId is null)
-                instance.AppId = "39baebad-39e5-4552-8c25-2c9b919064e2";
-            else
-                instance.AppId = appId;
-
-            return instance;
+            return InitAPI(GetBasicToken(email, password), appId, locale);
         }
 
         /// <summary>
@@ -78,21 +79,66 @@ namespace R6SiegeAPI
         /// </summary>
         /// <param name="token">Your Ubisoft auth token</param>
         /// <param name="appId">Your Ubisoft appid, not required</param>
-        public static API InitAPI(string token, string appId = null)
+        /// <param name="locale">Locale, not required</param>
+        /// <param name="tryLoadLast">if true library will try to load latest jsons automatically, not required</param>
+        public static API InitAPI(string token, string appId = "39baebad-39e5-4552-8c25-2c9b919064e2", Locales locale = Locales.en_us, bool tryLoadLast = true)
         {
             if (!(instance is null))
                 return instance;
 
-            instance = new API();
+            instance = new API
+            {
+                Token = token,
+                AppId = appId,
+                LocaleKey = locale
+            };
 
-            instance.Token = token;
-
-            if (appId is null)
-                instance.AppId = "39baebad-39e5-4552-8c25-2c9b919064e2";
-            else
-                instance.AppId = appId;
+            if (tryLoadLast)
+            {
+                try
+                {
+                   instance.LoadEndpoints(locale);
+                }
+                catch
+                {
+                    //
+                }
+            }
 
             return instance;
+        }
+
+        private void LoadEndpoints(Locales locale)
+        {
+            using (WebClient wc = new WebClient())
+            {
+                var html = wc.DownloadString(BaseUrl);
+
+                var mainSearch = "<script src=\"assets/scripts/main.";
+                var vendorSearch = "<script src=\"assets/scripts/vendor.";
+                var endSearch = ".js\"></script>";
+
+                string FindBetween(string str, string start, string end)
+                {
+                    var startPos = str.IndexOf(start) + start.Length;
+                    var endPos = str.IndexOf(end, startPos);
+                    return str.Substring(startPos, endPos - startPos);
+                }
+
+                var mainUrl = BaseUrl + "assets/scripts/main." + FindBetween(html, mainSearch, endSearch) + ".js";
+                var vendorUrl = BaseUrl + "assets/scripts/vendor." + FindBetween(html, vendorSearch, endSearch) + ".js";
+
+                var mainJs = wc.DownloadString(mainUrl);
+                var vendorJs = wc.DownloadString(vendorUrl);
+
+                var json = ".json";
+
+                OperatorsEndpoint = BaseUrl + "assets/data/operators." + FindBetween(mainJs, "assets/data/operators.", json) + json;
+                WeaponsEndpoint = BaseUrl + "assets/data/weapons." + FindBetween(mainJs, "assets/data/weapons.", json) + json;
+                SeasonsEndpoint = BaseUrl + "assets/data/seasons." + FindBetween(mainJs, "assets/data/seasons.", json) + json;
+
+                LocaleEndpoint = BaseUrl + $"assets/locales/locale.{locale.ToStringValue()}." + FindBetween(vendorJs, $"assets/locales/locale.{locale.ToStringValue()}.", json) + json;
+            }
         }
 
         public static API GetAPI()
@@ -187,7 +233,7 @@ namespace R6SiegeAPI
         {
             if (Operators is null)
             {
-                var json = await GetAsync("https://ubistatic-a.akamaihd.net/0058/prod/assets/data/operators.3a2655c8.json");
+                var json = await GetAsync(OperatorsEndpoint);
                 Operators = JsonConvert.DeserializeObject<Dictionary<string, OperatorDef>>(json);
             }
             return Operators;
@@ -199,7 +245,7 @@ namespace R6SiegeAPI
         {
             if (Weapons is null)
             {
-                var json = await GetAsync("https://ubistatic-a.akamaihd.net/0058/prod/assets/data/weapons.8a9b3d9e.json");
+                var json = await GetAsync(WeaponsEndpoint);
                 Weapons = JsonConvert.DeserializeObject<Dictionary<string, WeaponDef>>(json);
             }
             return Weapons;
@@ -250,7 +296,7 @@ namespace R6SiegeAPI
             if (Seasons is null)
             {
                 Seasons = new Dictionary<int, Season>();
-                var json = await GetAsync("https://ubistatic-a.akamaihd.net/0058/prod/assets/data/seasons.758503d3.json");
+                var json = await GetAsync(SeasonsEndpoint);
                 var data = JsonConvert.DeserializeObject<JObject>(json);
                 Season.LatestSeason = data.Last.First.ToObject<int>();
                 foreach (var sjson in data.First.Values())
@@ -268,41 +314,10 @@ namespace R6SiegeAPI
         {
             if (Locale is null)
             {
-                var json = await GetAsync("https://ubistatic-a.akamaihd.net/0058/prod/assets/locales/locale.en-us.5b91c978.json");
+                var json = await GetAsync(LocaleEndpoint);
                 Locale = JsonConvert.DeserializeObject<Dictionary<int, string>>(json);
             }
             return Locale;
-        }
-
-        private JObject Definitions;
-        /// <summary>
-        /// Retrieves the list of api definitions, downloading it from Ubisoft if it hasn't been fetched all ready
-        /// Primarily for internal use, but could contain useful information.
-        /// </summary>
-        /// <returns>definitions</returns>
-        public async Task<JObject> GetDefinitions()
-        {
-            if (Definitions is null)
-            {
-                var json = await GetAsync("https://ubistatic-a.akamaihd.net/0058/prod/assets/data/statistics.definitions.eb165e13.json");
-                var data = JsonConvert.DeserializeObject<JObject>(json);
-                Definitions = data;
-            }
-            return Definitions;
-        }
-
-        /// <summary>
-        /// Mainly for internal use with get_operator,
-        /// returns the "location" index for the key in the definitions
-        /// </summary>
-        /// <returns>the object's location index</returns>
-        private async Task<string> GetObjectIndex(string key)
-        {
-            var defs = await GetDefinitions();
-            if (defs.ContainsKey(key) && defs[key].Contains("objectIndex"))
-                return defs[key]["objectIndex"].ToString();
-            else
-                return null;
         }
     }
 }

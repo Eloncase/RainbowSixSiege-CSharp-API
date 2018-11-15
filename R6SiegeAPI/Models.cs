@@ -28,7 +28,7 @@ namespace R6SiegeAPI
 
             public Progression Progression;
 
-            public string Url => $"https://game-rainbow6.ubi.com/en-us/{Platform.ToStringValue()}/player-statistics/{ProfileId}/multiplayer";
+            public string Url => $"https://game-rainbow6.ubi.com/{API.GetAPI().LocaleKey.ToStringValue()}/{Platform.ToStringValue()}/player-statistics/{ProfileId}/multiplayer";
             public string IconUrl => $"https://ubisoft-avatars.akamaized.net/{ProfileId}/default_256_256.png";
 
             private Dictionary<string, Rank> Ranks;
