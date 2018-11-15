@@ -1,12 +1,11 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Text;
-using static R6SiegeAPI.Enums;
-using static R6SiegeAPI.Converters;
-using System.Threading.Tasks;
-using Newtonsoft.Json.Linq;
 using System.Linq;
+using System.Threading.Tasks;
+using static R6SiegeAPI.Converters;
+using static R6SiegeAPI.Enums;
 
 namespace R6SiegeAPI
 {

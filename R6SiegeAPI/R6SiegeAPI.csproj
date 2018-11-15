@@ -9,9 +9,7 @@
     <None Remove=".gitignore" />
     <None Remove="LICENSE" />
     <None Remove="MANIFEST.in" />
-    <None Remove="r6sapi.py" />
     <None Remove="README.md" />
-    <None Remove="__init__.py" />
   </ItemGroup>
 
   <ItemGroup>
