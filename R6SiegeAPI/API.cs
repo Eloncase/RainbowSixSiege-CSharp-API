@@ -246,7 +246,7 @@ namespace R6SiegeAPI
 
             var data = JsonConvert.DeserializeObject<JObject>(json);
 
-            return data["profiles"].ToObject<IEnumerable<Player>>().First();
+            return data["profiles"].ToObject<IEnumerable<Player>>().FirstOrDefault();
         }
 
         private Dictionary<string, OperatorDef> Operators;

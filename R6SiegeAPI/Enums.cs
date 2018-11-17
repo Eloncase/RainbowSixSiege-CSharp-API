@@ -32,6 +32,8 @@ namespace R6SiegeAPI
                     return "xbn";
                 case Platform.PLAYSTATION:
                     return "psn";
+                case Platform.STEAM:
+                    return "steam";
                 default:
                     throw new ArgumentOutOfRangeException("Platform");
             }
@@ -86,7 +88,8 @@ namespace R6SiegeAPI
         {
             UPLAY,
             XBOX,
-            PLAYSTATION
+            PLAYSTATION,
+            STEAM
         }
 
         public enum GamemodeNames

@@ -23,6 +23,8 @@ namespace R6SiegeAPI
                         return Platform.XBOX;
                     case "psn":
                         return Platform.PLAYSTATION;
+                    case "steam":
+                        return Platform.STEAM;
                     default:
                         throw new Exception($"Couldn't convert {reader.ValueType} to {objectType}");
                 }
