@@ -2,6 +2,17 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
+    <AssemblyName>Eloncase.R6SiegeAPI</AssemblyName>
+    <AssemblyVersion>0.2.0.0</AssemblyVersion>
+    <Authors>Eloncase</Authors>
+    <Company>Eloncase</Company>
+    <Description>R6SApi is an easy-to-use asynchronous API for Rainbow Six Siege, written in c#. Currently contains a few known bugs.</Description>
+    <Copyright>Eloncase (c) 2018</Copyright>
+    <PackageLicenseUrl>https://raw.githubusercontent.com/Eloncase/RainbowSixSiege-CSharp-API/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/Eloncase/RainbowSixSiege-CSharp-API</PackageProjectUrl>
+    <PackageReleaseNotes />
+    <Version>0.2.0-alpha</Version>
+    <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
   </PropertyGroup>
 
   <ItemGroup>

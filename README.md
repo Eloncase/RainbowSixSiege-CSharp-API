@@ -6,7 +6,7 @@ As of [351c229](https://github.com/Eloncase/RainbowSixSiege-CSharp-API/commit/35
 
 ### Installation
 
-TBA
+Get it on [Nuget](https://www.nuget.org/packages/Eloncase.R6SiegeAPI/)
 
 ### Documentation
 
@@ -19,7 +19,7 @@ using R6SiegeAPI;
 
 static async Task MainAsync()
 {
-    var api = R6SiegeAPI.API.InitAPI(email, password, null);
+    var api = API.InitAPI(email, password, null);
 
     var player = await api.GetPlayer("Eloncase", Enums.Platform.UPLAY, Enums.UserSearchType.Name);
     var oper = await player.GetOperator("caveira");
@@ -32,7 +32,6 @@ static async Task MainAsync()
   - examples
 
 ### License
-
 
 MIT
 

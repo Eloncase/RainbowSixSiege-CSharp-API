@@ -146,6 +146,11 @@ namespace R6SiegeAPI
             return instance;
         }
 
+        public static void Dispose()
+        {
+            instance = null;
+        }
+
         private async Task Connect()
         {
             var webRequest = WebRequest.Create("https://connect.ubi.com/ubiservices/v2/profiles/sessions");
@@ -182,11 +187,13 @@ namespace R6SiegeAPI
 
             if (webHeader is null)
             {
-                webHeader = new WebHeaderCollection();
-                webHeader.Add("Authorization", "Ubi_v1 t=" + AuthKey);
-                webHeader.Add("Ubi-AppId", AppId);
-                webHeader.Add("Ubi-SessionId", SessionId);
-                webHeader.Add("Connection", "keep-alive");
+                webHeader = new WebHeaderCollection
+                {
+                    { "Authorization", "Ubi_v1 t=" + AuthKey },
+                    { "Ubi-AppId", AppId },
+                    { "Ubi-SessionId", SessionId },
+                    { "Connection", "keep-alive" }
+                };
             }
 
             var webRequest = WebRequest.Create(uri);
@@ -194,12 +201,30 @@ namespace R6SiegeAPI
             HttpApiRequest.Method = "GET";
             HttpApiRequest.PreAuthenticate = true;
             HttpApiRequest.Headers = webHeader;
-            using (var APIResponse = await HttpApiRequest.GetResponseAsync())
+
+            try
             {
-                using (var responseStream = APIResponse.GetResponseStream())
+                using (var APIResponse = await HttpApiRequest.GetResponseAsync())
                 {
-                    var StreamReader = new StreamReader(responseStream, Encoding.Default);
-                    return StreamReader.ReadToEnd();
+                    using (var responseStream = APIResponse.GetResponseStream())
+                    {
+                        var StreamReader = new StreamReader(responseStream, Encoding.Default);
+                        return StreamReader.ReadToEnd();
+                    }
+                }
+            }
+            catch (WebException ex)
+            {
+                HttpStatusCode? status = (ex.Response as HttpWebResponse)?.StatusCode;
+
+                if (status.HasValue && status.Value == HttpStatusCode.Unauthorized)
+                {
+                    await Connect();
+                    return await GetAsync(uri);
+                }
+                else
+                {
+                    throw ex;
                 }
             }
         }
